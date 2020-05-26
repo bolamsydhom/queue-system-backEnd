@@ -11,6 +11,15 @@ const jwtSercret = process.env.jwt;
 
 
 const schema = new mongoose.Schema({
+    name:{
+        type:String,
+        required: true,
+        maxlength: 20
+    },
+    phoneNumber: {
+        type: Number,
+        required: true
+    },
     email: {
         type: mongoose.SchemaTypes.Email, 
         unique: true,
@@ -19,6 +28,9 @@ const schema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    locations:{
+        
     }
 
 });

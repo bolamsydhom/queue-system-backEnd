@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 require('mongoose-type-email');
 
 const bcrypt = require('bcrypt');
-const util =  require('util');
+const util = require('util');
 const jwt = require('jsonwebtoken');
 
 const sign = util.promisify(jwt.sign);
@@ -10,9 +10,24 @@ const verify = util.promisify(jwt.verify)
 const jwtSercret = process.env.jwt;
 
 
-const schema = new mongoose.Schema({
-    name:{
-        type:String,
+const userSchema = new mongoose.Schema({
+    deptID: {
+        type: mongoose.ObjectId,
+        ref: 'Department',
+        required: true
+    },
+    orgCode: {
+        type: mongoose.ObjectId,
+        ref: 'Organization',
+        required: true
+    },
+    branchCode: {
+        type: mongoose.ObjectId,
+        ref: 'Branch',
+        required: true
+    },
+    name: {
+        type: String,
         required: true,
         maxlength: 20
     },
@@ -21,7 +36,7 @@ const schema = new mongoose.Schema({
         required: true
     },
     email: {
-        type: mongoose.SchemaTypes.Email, 
+        type: mongoose.SchemaTypes.Email,
         unique: true,
         required: true
     },
@@ -29,14 +44,22 @@ const schema = new mongoose.Schema({
         type: String,
         required: true
     },
-    locations:{
-        
+    locations: {
+        type: [String],
+        required: true
+    },
+    profilePic: {
+        type: String,
     }
+
 
 });
 
 schema.set('toJSON', {
-    virtuals: true
+    virtuals: true,
+    transform: doc => {
+        return _.pick(doc, ["email", "password"])
+    }
 });
 schema.virtual('tickets', {
     ref: 'Ticket',
@@ -61,18 +84,18 @@ schema.statics.getUserfromToken = async function (token) {
 }
 
 
-schema.methods.generateToken = function (expiresIn= '30m') {
+schema.methods.generateToken = function (expiresIn = '30m') {
     const userInstance = this;
-    return sign({currentUserId: userInstance.id},jwtSercret,{expiresIn})
+    return sign({ currentUserId: userInstance.id }, jwtSercret, { expiresIn })
 };
 
 
 schema.methods.comparePassword = function (myPlainText) {
     const userInstance = this;
-    return bcrypt.compare(myPlainText,userInstance.password);
+    return bcrypt.compare(myPlainText, userInstance.password);
 };
 
 
-const User = mongoose.model('User', schema);
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;

@@ -1,66 +1,55 @@
 var mongoose = require('mongoose');
-const dataSchema = new mongoose.Schema({
-         name: {
-             type: String,
-             minlength: 3,
-             maxlength: 20,
-             required: true
-         },
-         description: {
-             type: String,
-             minlength: 10,
-             maxlength: 500,
-             required: true
-         },
-         lang: {
-             id: {
-                 type: Number,
-                 default: 1
-             },
-             name: {
-                 type: String,
-                 default: "eng"
-             }
-         }
-     
-})
-const schema = new mongoose.Schema({
+
+const ticketSchema = new mongoose.Schema({
     userID: {
         type: mongoose.ObjectId,
         ref: 'User',
         required: true
     },
 
-    data: [dataSchema],
-
-    discount: {
+    brancdID: {
+        type: mongoose.ObjectId,
+        ref: 'Branch',
+        required: true
+    },
+    deptID: {
+        type: mongoose.ObjectId,
+        ref: 'Department',
+        required: true
+    },
+    queueNumber: {
         type: Number
     },
 
-    price: {
+    estimatedTime: {
         type: Number,
         required: true
     },
-
-    imagesUrls: {
-        type: [{
-            type: String
-        }]
-    },
-
-    categoryId : {
-        type: mongoose.ObjectId,
-        ref: 'Category',
+    securityCode: {
+        type: String,
         required: true
+    },
+    isDelayed: {
+        type: Boolean
+    },
+    isNotShow: {
+        type: Boolean
+    },
+    isCanceled: {
+        type: Boolean
+    },
+    isRescheduled: {
+        type: Boolean
     }
-
-
 }, {
     timestamps: true
 })
 
 
+schema.set('toJSON', {
+    virtuals: true
+});
 
-const Ticket = mongoose.model('Ticket', schema);
+const Ticket = mongoose.model('Ticket', ticketSchema);
 
 module.exports = Ticket;

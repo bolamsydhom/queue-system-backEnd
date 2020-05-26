@@ -1,6 +1,6 @@
 const express = require('express');
 const Users = require('../models/user');
-const Products = require('../models/product');
+const Tickets = require('../models/ticket');
 const authnticationMiddleware = require('../middlewares/authentication');
 const router = express.Router();
 
@@ -38,7 +38,7 @@ router.post('/register', async (req, res, next) => {
         }
         await user.save();
         res.status(200).json(`s`);
-        // return res.redirect('http://localhost:3000/product');
+        // return res.redirect('http://localhost:3000/ticket');
     } catch (err) {
         err.statusCode = 422;
         next(err);
@@ -63,7 +63,7 @@ router.post('/login', async (req, res, next) => {
             const person = await Users.findOne({
                 email
             });
-            // .populate('products').exec();
+            // .populate('tickets').exec();
             if (!person) {
                 throw new Error('Try Again!! wrong email or password')
             } else {

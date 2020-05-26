@@ -6,7 +6,7 @@ require('./db');
 const fileUpload = require('express-fileupload');
 
 const userRouter = require('./routes/user')
-const productRouter = require('./routes/product')
+const productRouter = require('./routes/ticket')
 const categoryRouter = require('./routes/category')
 const app = express();
 const cors = require('cors');
@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 app.use(cors());
 
 app.use('/user', userRouter);
-app.use('/product', productRouter);
+app.use('/ticket', productRouter);
 app.use('/category', categoryRouter);
 
 app.use((err,req,res,next)=>{

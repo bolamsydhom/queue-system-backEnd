@@ -61,6 +61,6 @@ const schema = new mongoose.Schema({
 
 
 
-const Product = mongoose.model('Product', schema);
+const Ticket = mongoose.model('Ticket', schema);
 
-module.exports = Product;
+module.exports = Ticket;

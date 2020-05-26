@@ -4,7 +4,7 @@ const cloudinary = require("cloudinary").v2;
 
 require('express-async-errors');
 
-const Products = require('../models/product');
+const Tickets = require('../models/ticket');
 const authnticationMiddleware = require('../middlewares/authentication');
 const authorizationMiddleWare = require('../middlewares/authorization');
 
@@ -39,7 +39,7 @@ router.post('/test', async (req, res, next) => {
         res.status(200).json(result.url);
 
         })
-        // await product.save();
+        // await ticket.save();
         // res.status(200).json(image);
     } catch (err) {
         next(err);
@@ -60,7 +60,7 @@ router.post('/add', authnticationMiddleware,  async (req, res, next) => {
             categoryId
         } = req.body;
         const userID = req.user.id;
-        const product = new Products({
+        const ticket = new Tickets({
             userID,
             discount,
             price,
@@ -70,8 +70,8 @@ router.post('/add', authnticationMiddleware,  async (req, res, next) => {
             // createdAt: new Date()
         });
 
-        await product.save();
-        res.status(200).json(` ${product.data[0].name} added with ${product.data[0].description} and ${product}`);
+        await ticket.save();
+        res.status(200).json(` ${ticket.data[0].name} added with ${ticket.data[0].description} and ${ticket}`);
     } catch (err) {
         next(err);
     }
@@ -90,18 +90,18 @@ router.get('/', async (req, res, next) => {
     sortObject[sortBy] = sdir;
 
 
-    const product = limit & sortBy ? await Products.find().limit(+limit).skip(+skip).sort(sortObject) :
-        sortBy ? await Products.find().sort(sortObject) :
-        limit ? await Products.find().limit(+limit).skip(+skip) :
-        await Products.find();
+    const ticket = limit & sortBy ? await Tickets.find().limit(+limit).skip(+skip).sort(sortObject) :
+        sortBy ? await Tickets.find().sort(sortObject) :
+        limit ? await Tickets.find().limit(+limit).skip(+skip) :
+        await Tickets.find();
 
-    const numberOfProducts = await Products.count();
-    // const product = await Products.find().limit(limit ? +limit : 9).skip(skip ? +skip : 0);
+    const numberOfProducts = await Tickets.count();
+    // const ticket = await Tickets.find().limit(limit ? +limit : 9).skip(skip ? +skip : 0);
     res.status(200).json({
-        product: product,
+        ticket: ticket,
         numberOfProducts: numberOfProducts
     });
-    // res.status(200).json(product
+    // res.status(200).json(ticket
     //     // numberOfPages: Math.ceil(numberOfPages)
     // );
 
@@ -114,13 +114,13 @@ router.patch('/:id', authnticationMiddleware, authorizationMiddleWare, async (re
         id
     } = req.params;
     const userId = req.user.id;
-    const product = await Products.findById(id);
-    await product.update(req.body, {
+    const ticket = await Tickets.findById(id);
+    await ticket.update(req.body, {
         new: true,
         runValidators: true,
         omitUndefined: true
     })
-    res.status(200).json(`${product}updated Successfuly`);
+    res.status(200).json(`${ticket}updated Successfuly`);
 
 
 })
@@ -131,9 +131,9 @@ router.get('/:id', async (req, res, next) => {
     const {
         id
     } = req.params;
-    const product = await Products.findById(id);
+    const ticket = await Tickets.findById(id);
 
-    res.status(200).json(product);
+    res.status(200).json(ticket);
 
 
 })
@@ -141,8 +141,8 @@ router.get('/:id', async (req, res, next) => {
 router.delete('/:id', authnticationMiddleware, authorizationMiddleWare, async (req, res, next) => {
 
     const userId = req.user.id;
-    const product = await Products.findById(req.params.id);
-    await Products.deleteOne(product);
+    const ticket = await Tickets.findById(req.params.id);
+    await Tickets.deleteOne(ticket);
     res.status(200).json("Deleted Successfuly");
 
 

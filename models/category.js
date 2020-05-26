@@ -19,8 +19,8 @@ const schema = new mongoose.Schema({
 schema.set('toJSON', {
     virtuals: true
 });
-schema.virtual('products', {
-    ref: 'Product',
+schema.virtual('tickets', {
+    ref: 'Ticket',
     localField: '_id',
     foreignField: 'categoryId'
 })

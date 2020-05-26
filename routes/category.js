@@ -19,25 +19,25 @@ router.get('/filter/:id', async (req, res, next) => {
        id
    } = req.params;
 
-    // const products = await Categories.find({
+    // const tickets = await Categories.find({
     //    _id: id
-    // }).populate('products').limit(+limit).skip(+skip).exec();
+    // }).populate('tickets').limit(+limit).skip(+skip).exec();
     
 var stype = `{${sortBy}:${sdir}}`;
 // var stype = `sort : {price:${sdir}}`;
 
 
-      const products = await Categories.find({
+      const tickets = await Categories.find({
           _id: id
       }).populate({
-          path: 'products',
+          path: 'tickets',
           options: {
               sort: sortBy
           }
       }).limit(+limit).skip(+skip).exec();
-// products.to
+// tickets.to
     // const test = await Categories.find();
-     res.status(200).json( products );
+     res.status(200).json( tickets );
 
 
 })

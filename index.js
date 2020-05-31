@@ -11,7 +11,7 @@ require('./db');
 const fileUpload = require('express-fileupload');
 
 const userRouter = require('./routes/user');
-const productRouter = require('./routes/ticket');
+const ticketRouter = require('./routes/ticket');
 const categoryRouter = require('./routes/category');
 const app = express();
 
@@ -45,10 +45,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 
 app.use('/user', userRouter);
-app.use('/ticket', productRouter);
-
-
-
+app.use('/ticket', ticketRouter);
 app.use('/category', categoryRouter);
 
 

@@ -73,6 +73,29 @@ router.get('/', async (req, res, next) => {
 
 })
 
+router.get('/waiting', async (req, res, next) => {
+
+    // const {
+    //     id
+    // } = req.params;
+    // const ticket = await Tickets.findById(id);
+
+    // res.status(200).json(ticket);
+    res.status(200).json('done');
+    // console.log('dfdfddf');
+
+})
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+    socket.on('my message', (msg) => {
+        console.log('message: ' + msg);
+    });
+});
+
 
 router.patch('/:id', authnticationMiddleware, authorizationMiddleWare, async (req, res, next) => {
 
@@ -104,28 +127,7 @@ router.get('/:id', async (req, res, next) => {
 
 })
 
-router.get('/waitingCst', async (req, res, next) => {
 
-    // const {
-    //     id
-    // } = req.params;
-    // const ticket = await Tickets.findById(id);
-
-    // res.status(200).json(ticket);
-    res.status(200).json('done');
-
-
-})
-
-io.on('connection', (socket) => {
-    console.log('a user connected');
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-    });
-      socket.on('my message', (msg) => {
-      console.log('message: ' + msg);
-      });
-});
 
 
 router.delete('/:id', authnticationMiddleware, authorizationMiddleWare, async (req, res, next) => {

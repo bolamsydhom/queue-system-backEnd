@@ -46,7 +46,7 @@ const ticketSchema = new mongoose.Schema({
 })
 
 
-schema.set('toJSON', {
+ticketSchema.set('toJSON', {
     virtuals: true
 });
 

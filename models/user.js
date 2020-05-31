@@ -13,25 +13,28 @@ const jwtSercret = process.env.jwt;
 const userSchema = new mongoose.Schema({
     deptID: {
         type: mongoose.ObjectId,
-        ref: 'Department',
-        required: true
+        ref: 'Department'
     },
     orgCode: {
         type: mongoose.ObjectId,
-        ref: 'Organization',
-        required: true
+        ref: 'Organization'
     },
     branchCode: {
         type: mongoose.ObjectId,
-        ref: 'Branch',
-        required: true
+        ref: 'Branch'
     },
-    name: {
+    firstName: {
         type: String,
         required: true,
         maxlength: 20
     },
+     lastName: {
+         type: String,
+         required: true,
+         maxlength: 20
+     },
     phoneNumber: {
+        unique: true,
         type: Number,
         required: true
     },
@@ -50,24 +53,28 @@ const userSchema = new mongoose.Schema({
     },
     profilePic: {
         type: String,
+    },
+    isAdmin:{
+        type: Boolean,
+        required: true
     }
 
 
 });
 
-schema.set('toJSON', {
+userSchema.set('toJSON', {
     virtuals: true,
     transform: doc => {
         return _.pick(doc, ["email", "password"])
     }
 });
-schema.virtual('tickets', {
+userSchema.virtual('tickets', {
     ref: 'Ticket',
     localField: '_id',
     foreignField: 'userID'
 })
 
-schema.pre('save', async function () {
+userSchema.pre('save', async function () {
     const userInstance = this;
     if (this.isModified('password')) {
         userInstance.password = await bcrypt.hash(userInstance.password, 7)
@@ -75,7 +82,7 @@ schema.pre('save', async function () {
 });
 
 
-schema.statics.getUserfromToken = async function (token) {
+userSchema.statics.getUserfromToken = async function (token) {
     const User = this;
     const payload = await verify(token, jwtSercret);
     const currentUser = await User.findById(payload.currentUserId);
@@ -84,13 +91,13 @@ schema.statics.getUserfromToken = async function (token) {
 }
 
 
-schema.methods.generateToken = function (expiresIn = '30m') {
+userSchema.methods.generateToken = function (expiresIn = '30m') {
     const userInstance = this;
     return sign({ currentUserId: userInstance.id }, jwtSercret, { expiresIn })
 };
 
 
-schema.methods.comparePassword = function (myPlainText) {
+userSchema.methods.comparePassword = function (myPlainText) {
     const userInstance = this;
     return bcrypt.compare(myPlainText, userInstance.password);
 };

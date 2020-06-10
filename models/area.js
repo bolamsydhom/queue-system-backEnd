@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 const schema = new mongoose.Schema({
-    cityID: {
+    cityId: {
         type: mongoose.ObjectId,
         ref: 'City',
         required: true

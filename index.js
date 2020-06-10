@@ -6,7 +6,7 @@ const specs = require('./helpers/swagger');
 // import * as specs from './helpers/swagger';
 var serveStatic = require('serve-static')
 
-const port = process.env.port || 8000;
+const port = process.env.PORT || 8000;
 require('./db');
 
 const fileUpload = require('express-fileupload');

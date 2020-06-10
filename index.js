@@ -5,7 +5,7 @@ const swaggerUi = require('swagger-ui-express');
 const specs = require('./helpers/swagger');
 // import * as specs from './helpers/swagger';
 
-const port = process.env.port;
+const port = process.env.port || 3000;
 require('./db');
 
 const fileUpload = require('express-fileupload');

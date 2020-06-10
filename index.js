@@ -68,6 +68,17 @@ app.use((err,req,res,next)=>{
     });
 });
 
-app.listen(port, ()=>{
-    console.log(`app listing on port :${port}`)
-})
+const server = app.listen(port)
+// app.listen(port, ()=>{
+//     console.log(`app listing on port :${port}`)
+// })
+const io = require('./socket').init(server);
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+    socket.on('my message', (msg) => {
+        console.log('message: ' + msg);
+    });
+});

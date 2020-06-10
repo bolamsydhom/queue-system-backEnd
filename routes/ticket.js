@@ -11,8 +11,8 @@ const authorizationMiddleWare = require('../middlewares/authorization');
 const router = express.Router();
 
 
-const http = require('http').createServer(express);
-const io = require('socket.io')(http);
+// const http = require('http').createServer(express);
+const io = require('../socket');
 
 
 router.post('/add', authnticationMiddleware,  async (req, res, next) => {
@@ -37,6 +37,7 @@ router.post('/add', authnticationMiddleware,  async (req, res, next) => {
         });
 
         await ticket.save();
+        io.getIO().emit('ticket', {waiting: '30' })
         res.status(200).json(` ${ticket.data[0].name} added with ${ticket.data[0].description} and ${ticket}`);
     } catch (err) {
         next(err);
@@ -86,15 +87,7 @@ router.get('/waiting', async (req, res, next) => {
 
 })
 
-io.on('connection', (socket) => {
-    console.log('a user connected');
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-    });
-    socket.on('my message', (msg) => {
-        console.log('message: ' + msg);
-    });
-});
+
 
 
 router.patch('/:id', authnticationMiddleware, authorizationMiddleWare, async (req, res, next) => {

@@ -15,6 +15,7 @@ var path = require('path')
 const userRouter = require('./routes/user');
 const ticketRouter = require('./routes/ticket');
 const categoryRouter = require('./routes/category');
+const cityRouter = require('./routes/city');
 const app = express();
 
 
@@ -49,6 +50,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use('/user', userRouter);
 app.use('/ticket', ticketRouter);
 app.use('/category', categoryRouter);
+app.use('/city', cityRouter);
 
 app.use(serveStatic(path.join(__dirname, 'dist')))
 

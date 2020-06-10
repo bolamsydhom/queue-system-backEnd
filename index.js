@@ -4,8 +4,9 @@ const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const specs = require('./helpers/swagger');
 // import * as specs from './helpers/swagger';
+var serveStatic = require('serve-static')
 
-const port = process.env.port || 3000;
+const port = process.env.port || 8000;
 require('./db');
 
 const fileUpload = require('express-fileupload');
@@ -47,6 +48,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use('/user', userRouter);
 app.use('/ticket', ticketRouter);
 app.use('/category', categoryRouter);
+
+app.use(serveStatic(path.join(__dirname, 'dist')))
 
 
 app.use((err,req,res,next)=>{

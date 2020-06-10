@@ -10,6 +10,7 @@ const port = process.env.port || 8000;
 require('./db');
 
 const fileUpload = require('express-fileupload');
+var path = require('path')
 
 const userRouter = require('./routes/user');
 const ticketRouter = require('./routes/ticket');

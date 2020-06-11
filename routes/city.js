@@ -3,6 +3,7 @@ require('express-async-errors');
 
 const Cities = require('../models/city');
 const Areas = require('../models//area');
+const Area = require('../models//area');
 
 const router = express.Router();
 
@@ -60,9 +61,6 @@ router.get('/area/:cityId', async (req, res, next) => {
     const {
         cityId
     } = req.params;
-    const area = await Cities.find(c=> c.id === cityId);
-
-    res.status(200).json(area);
 
 
 })

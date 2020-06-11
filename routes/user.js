@@ -15,6 +15,7 @@ cloudinary.config({
 });
 
 
+//get area by city id///////////////
 
 /**
  * @swagger

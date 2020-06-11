@@ -56,12 +56,16 @@ router.post('/area/add', async (req, res, next) => {
 })
 
 
-router.get('/area/:cityId', async (req, res, next) => {
-
+router.get('/area/:id', async (req, res, next) => {
     const {
-        cityId
+        id
     } = req.params;
 
+     const areas = await Areas.find({
+        cityId: id
+     })
+   
+  res.status(200).json(areas);
 
 })
 module.exports = router;

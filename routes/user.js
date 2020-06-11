@@ -14,7 +14,6 @@ cloudinary.config({
     api_secret: process.env.API_SECRET
 });
 
-
 //get area by city id///////////////
 
 /**

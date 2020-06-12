@@ -17,7 +17,9 @@ const userRouter = require('./routes/user');
 const ticketRouter = require('./routes/ticket');
 const categoryRouter = require('./routes/category');
 const cityRouter = require('./routes/city');
-const organizationRouter = require('./routes/organization')
+const organizationRouter = require('./routes/organization');
+const branchRouter = require('./routes/branch');
+
 const app = express();
 
 
@@ -55,6 +57,7 @@ app.use('/ticket', ticketRouter);
 app.use('/category', categoryRouter);
 app.use('/city', cityRouter);
 app.use('/organization',organizationRouter);
+app.use('/branch',branchRouter);
 
 app.use(serveStatic(path.join(__dirname, 'dist')))
 

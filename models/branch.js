@@ -6,19 +6,14 @@ const daysSchema = new mongoose.Schema({
         // required: true
     },
     openShift: {
-        type: {
-            time: {
-                type: Date
-            }
-        },
+        type: Number,
         // required: true
+        min:0,max:24
     },
     endShift: {
-        type: {
-            time: {
-                type: Date
-            }
-        },
+        type: Number,
+        min:0,max:24
+
         // required: true
     }
 
@@ -35,9 +30,12 @@ const branchSchema = new mongoose.Schema({
         required: true,
         maxlength: 20
     },
-    location: {
-        type: String,
-        required: true
+    locations: {
+        type: [{
+            type: mongoose.ObjectId,
+            ref: 'City',
+            required: true
+        }]
     },
     workingDays: [daysSchema],
 
@@ -46,6 +44,11 @@ const branchSchema = new mongoose.Schema({
             type: String,
         }],
         required: true
+    },
+    areaId:{
+        type: mongoose.ObjectId,
+        ref:'area',
+        required:true
     }
     // departments: {
     //     type: [{
@@ -57,7 +60,7 @@ const branchSchema = new mongoose.Schema({
     timestamps: true
 })
 
-schema.set('toJSON', {
+branchSchema.set('toJSON', {
     virtuals: true
 });
 

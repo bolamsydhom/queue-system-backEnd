@@ -173,6 +173,8 @@ router.post('/register', async (req, res, next) => {
 
 
 
+
+
 router.post('/email', emailverfication, async (req, res, next) => {
     if (!req.body.email) {
         res.status(422).send(`email is required`);

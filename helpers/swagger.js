@@ -1,7 +1,7 @@
 const swaggerJsdoc = require('swagger-jsdoc');
 const options = {
     // List of files to be processed.
-    apis: ['./routes/user.js', './routes/ticket.js'],
+    apis: ['./routes/user.js', './routes/ticket.js', './routes/organization.js'],
     // You can also set globs for your apis
     // e.g. './routes/*.js'
     // basePath: '/',
@@ -12,6 +12,7 @@ const options = {
             title: 'Q system APIs',
             version: '1.0.0',
         },
+        
         // servers: ["http://localhost:3000"]
     },
 };

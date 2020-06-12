@@ -42,6 +42,28 @@ try{
 }
 })
 
+
+
+/**
+ * @swagger
+ * /organization/:id:
+ *   post:
+ *     summary: This should return all companies in specific city.
+ *     description: This is api to return all companies in specific city.
+ *     consumes:
+ *       — application/json
+ *     parameters:
+ *       — name: paramters
+ *       in: paramters
+ *       schema:
+ *         type: string
+ *         properties:
+ *           id:
+ *     responses: 
+ *       200:
+ *         description: logged in successfully .
+ */
+
 router.get("/city/:id",async(req,res,next)=>{
     const{
         id

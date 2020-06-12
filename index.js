@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 
 const swaggerUi = require('swagger-ui-express');
+// import * as swaggerDocument from './helpers/swagger.json';
 const specs = require('./helpers/swagger');
 // import * as specs from './helpers/swagger';
 var serveStatic = require('serve-static')
@@ -44,6 +45,7 @@ app.use((req, res, next) => {
 })
 app.use(cors());
 
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 

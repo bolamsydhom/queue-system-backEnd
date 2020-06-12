@@ -16,6 +16,10 @@ const organizationSchema = new mongoose.Schema({
             type: String,
         }],
         required: true
+    },
+    imaUrl: {
+        type: String,
+        required: true
     }
 
 }, {

@@ -6,6 +6,7 @@ const router = express.Router();
 
 const parser = require("../middlewares/cloudinary");
 const fileUpload = require('express-fileupload');
+const emailverfication = require('../middlewares/emailverfication');
 const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
@@ -98,12 +99,18 @@ router.get('/', authnticationMiddleware, async (req, res, next) => {
  *            required:
  *               -userName
  *            properties:
- *               userName:
- *                 type: string
+ *               email:
+ *                 type: Email
  *               firstName:
  *                 type: string
  *               lastName:
  *                 type: string
+ *               password:
+ *                 type: string
+ *               repeated password:
+ *                 type: string
+ *               phone number:
+ *                 type: Number
  *     responses: 
  *       200:
  *         description: logged in successfully .
@@ -118,31 +125,38 @@ router.post('/register', async (req, res, next) => {
             password,
             repeatedPassword,
             orgCode,
+            deptID,
+            branchCode,
             firstName,
             lastName,
             phoneNumber
 
         } = req.body;
 
-        
-        const user = orgCode ? new Users({
-            email,
-            password,
-            orgCode,
-            firstName,
-            lastName,
-            phoneNumber,
-            isAdmin:true
-        })
-        :new Users({
-            email,
-            password,
-            firstName,
-            lastName,
-            phoneNumber,
-            isAdmin: false
 
-        });
+        const user = orgCode ? new Users({
+                email,
+                password,
+                orgCode,
+                firstName,
+                lastName,
+                phoneNumber,
+                deptID,
+                branchCode,
+                isAdmin: true,
+                isEmployee: true
+            }) :
+            new Users({
+                email,
+                password,
+                firstName,
+                lastName,
+                phoneNumber,
+                isAdmin: false,
+                isEmployee: false
+
+
+            });
         if (password !== repeatedPassword) {
 
             throw new Error('Password didnot Match');
@@ -156,6 +170,34 @@ router.post('/register', async (req, res, next) => {
     }
 
 })
+
+
+
+router.post('/email', emailverfication, async (req, res, next) => {
+    if (!req.body.email) {
+        res.status(422).send(`email is required`);
+    } else {
+        try {
+            const {
+                validEmail,
+            } = req;
+            // const person = await Users.findOne({
+            //     email
+            // });
+            if (validEmail) res.status(200).json('valid Email');
+            
+        } catch (err) {
+            console.log(error);
+            // err.statusCode = 422;
+            next(err);
+        }
+    }
+
+
+
+
+})
+
 
 
 

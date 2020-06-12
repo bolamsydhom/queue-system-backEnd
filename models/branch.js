@@ -3,20 +3,34 @@ var mongoose = require('mongoose');
 const daysSchema = new mongoose.Schema({
     day: {
         type: String,
-        required: true
+        // required: true
     },
-    period: {
-        type: String,
-        required: true
+    openShift: {
+        type: {
+            time: {
+                type: Date
+            }
+        },
+        // required: true
+    },
+    endShift: {
+        type: {
+            time: {
+                type: Date
+            }
+        },
+        // required: true
     }
+
+
 })
 const branchSchema = new mongoose.Schema({
-    orgCode: {
+    companyId: {
         type: mongoose.ObjectId,
         ref: "Organization",
         required: true
     },
-    name: {
+    branchName: {
         type: String,
         required: true,
         maxlength: 20
@@ -32,13 +46,13 @@ const branchSchema = new mongoose.Schema({
             type: String,
         }],
         required: true
-    },
-    departments: {
-        type: [{
-            type: String,
-        }],
-        required: true
     }
+    // departments: {
+    //     type: [{
+    //         type: String,
+    //     }],
+    //     required: true
+    // }
 }, {
     timestamps: true
 })

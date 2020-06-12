@@ -57,6 +57,10 @@ const userSchema = new mongoose.Schema({
     isAdmin:{
         type: Boolean,
         required: true
+    },
+    isEmployee: {
+        type: Boolean,
+        required: true
     }
 
 
@@ -64,9 +68,9 @@ const userSchema = new mongoose.Schema({
 
 userSchema.set('toJSON', {
     virtuals: true,
-    transform: doc => {
-        return _.pick(doc, ["email", "password"])
-    }
+    // transform: doc => {
+    //     return _.pick(doc, ["email", "password"])
+    // }
 });
 userSchema.virtual('tickets', {
     ref: 'Ticket',

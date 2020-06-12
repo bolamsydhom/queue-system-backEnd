@@ -4,6 +4,13 @@ const organizationSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    locations: {
+        type: [{
+            type: mongoose.ObjectId,
+            ref: 'City',
+            required: true
+        }]
+    },
     services: {
         type: [{
             type: String,

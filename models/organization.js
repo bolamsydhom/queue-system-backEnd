@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+const { schema } = require('./city');
 const organizationSchema = new mongoose.Schema({
     name: {
         type: String,

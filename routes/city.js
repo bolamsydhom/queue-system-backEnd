@@ -2,8 +2,7 @@ const express = require('express');
 require('express-async-errors');
 
 const Cities = require('../models/city');
-const Areas = require('../models//area');
-const Area = require('../models//area');
+const Areas = require('../models/area');
 
 const router = express.Router();
 

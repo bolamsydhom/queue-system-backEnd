@@ -34,7 +34,7 @@ router.post('/add', async (req, res, next) => {
             name
         });
         await city.save();
-        res.status(200).json(` reqisterd successfully`);
+        res.status(200).json(` Entered successfully`);
     } catch (err) {
         err.statusCode = 422;
         next(err);
@@ -53,7 +53,7 @@ router.post('/area/add', async (req, res, next) => {
             cityId
         });
         await area.save();
-        res.status(200).json(` reqisterd successfully`);
+        res.status(200).json(` Entered successfully`);
     } catch (err) {
         err.statusCode = 422;
         next(err);

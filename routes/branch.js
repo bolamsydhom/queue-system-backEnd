@@ -1,6 +1,7 @@
 const express = require("express");
 require("express-async-errors");
 
+
 const Branchs = require("../models/branch");
 const Days = require("../models/branch");
 
@@ -32,22 +33,20 @@ router.post("/add", async (req, res, next) => {
   }
 });
 
-router.get('/',async(req,res,next)=>{
+router.get("/", async (req, res, next) => {
   const branch = await Branchs.find();
-  res.status(200).json(branch)
-})
+  res.status(200).json(branch);
+});
 
-router.get("/city/:id",async(req,res,next)=>{
-  const{
-      id
-  }=req.params
+router.get("/city/:id", async (req, res, next) => {
+  const { id } = req.params;
 
-  const branch=await Branchs.find({
-      locations:id
-  })
+  const branch = await Branchs.find({
+    cityId: id,
+  });
 
   res.status(200).json(branch);
-})
+});
 
 router.get("/area/:id", async (req, res, next) => {
   const { id } = req.params;
@@ -56,6 +55,23 @@ router.get("/area/:id", async (req, res, next) => {
     areaId: id,
   });
   res.status(200).json(branch);
+});
+
+router.get("/:id", async (req, res, next) => {
+  const { id } = req.params;
+  const branch = await Branchs.findById(id);
+
+  res.status(200).json(branch);
+});
+
+
+router.get("/service/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  const branch = await Branchs.findById(id);
+const service = Object.values(branch.services)
+
+  res.status(200).json(service);
 });
 
 module.exports = router;

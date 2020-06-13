@@ -26,7 +26,7 @@ router.post("/add", async (req, res, next) => {
       areaId,
     });
     await branch.save();
-    res.status(200).json(`the organization added Successfully !`);
+    res.status(200).json(`the Branch added Successfully !`);
   } catch (err) {
     err.statusCode = 422;
     next(err);

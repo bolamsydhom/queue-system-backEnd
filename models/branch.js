@@ -19,6 +19,14 @@ const daysSchema = new mongoose.Schema({
 
 
 })
+const serviceSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    }
+
+
+})
 const branchSchema = new mongoose.Schema({
     companyId: {
         type: mongoose.ObjectId,
@@ -38,12 +46,8 @@ const branchSchema = new mongoose.Schema({
     },
     workingDays: [daysSchema],
 
-    services: {
-        type: [{
-            type: String,
-        }],
-        required: true
-    },
+    services:[serviceSchema],
+    
     areaId:{
         type: mongoose.ObjectId,
         ref:'Area',

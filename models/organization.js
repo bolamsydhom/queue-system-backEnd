@@ -1,5 +1,15 @@
 var mongoose = require('mongoose');
 const { schema } = require('./city');
+
+const serviceSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    }
+
+
+})
+
 const organizationSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -12,12 +22,8 @@ const organizationSchema = new mongoose.Schema({
             required: true
         }]
     },
-    services: {
-        type: [{
-            type: String,
-        }],
-        required: true
-    },
+    services:[serviceSchema],
+    
     imgUrl: {
         type: String,
         required: true

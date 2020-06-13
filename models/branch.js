@@ -30,12 +30,11 @@ const branchSchema = new mongoose.Schema({
         required: true,
         maxlength: 20
     },
-    locations: {
-        type: [{
+    cityId: {
             type: mongoose.ObjectId,
             ref: 'City',
             required: true
-        }]
+        
     },
     workingDays: [daysSchema],
 
@@ -47,7 +46,7 @@ const branchSchema = new mongoose.Schema({
     },
     areaId:{
         type: mongoose.ObjectId,
-        ref:'area',
+        ref:'Area',
         required:true
     }
     // departments: {

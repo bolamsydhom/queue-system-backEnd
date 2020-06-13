@@ -11,7 +11,7 @@ router.post("/add", async (req, res, next) => {
     const {
       companyId,
       branchName,
-      locations,
+      cityId,
       workingDays,
       services,
       areaId,
@@ -19,7 +19,7 @@ router.post("/add", async (req, res, next) => {
     const branch = new Branchs({
       companyId,
       branchName,
-      locations,
+      cityId,
       workingDays,
       services,
       areaId,

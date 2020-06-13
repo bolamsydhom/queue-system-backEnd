@@ -13,6 +13,13 @@ router.get('/', async (req, res, next) => {
     res.status(200).json(city);
 })
 
+router.get('/:id',async(req,res,next)=>{
+    const{id}=req.params
+    const city= await Cities.findById(id)
+    res.status(200).json(city);
+
+})
+
 router.get('/area', async (req, res, next) => {
     const area = await Areas.find();
     res.status(200).json(area);

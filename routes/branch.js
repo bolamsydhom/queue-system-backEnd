@@ -33,10 +33,10 @@ router.post("/add", async (req, res, next) => {
   }
 });
 
-router.get("/", async (req, res, next) => {
-  const branch = await Branchs.find();
-  res.status(200).json(branch);
-});
+// router.get("/", async (req, res, next) => {
+//   const branch = await Branchs.find();
+//   res.status(200).json(branch);
+// });
 
 router.get("/city/:id", async (req, res, next) => {
   const { id } = req.params;
@@ -57,12 +57,12 @@ router.get("/area/:id", async (req, res, next) => {
   res.status(200).json(branch);
 });
 
-router.get("/:id", async (req, res, next) => {
-  const { id } = req.params;
-  const branch = await Branchs.findById(id);
+// router.get("/:id", async (req, res, next) => {
+//   const { id } = req.params;
+//   const branch = await Branchs.findById(id);
 
-  res.status(200).json(branch);
-});
+//   res.status(200).json(branch);
+// });
 
 
 router.get("/service/:id", async (req, res, next) => {
@@ -73,5 +73,36 @@ const service = Object.values(branch.services)
 
   res.status(200).json(service);
 });
+
+
+router.get("/branch", async (req, res, next) => {
+ //console.log(req.query)
+
+
+const cityid = req.query.cityid;
+ const companyid = req.query.companyid;
+
+ const branch = await Branchs.find({
+   cityId: cityid, 
+   companyId: companyid
+  });
+
+  res.status(200).json(branch);
+});
+
+router.get("/branchs", async (req, res, next) => {
+  //console.log(req.query)
+ 
+ 
+ const areaid = req.query.areaid;
+  const companyid = req.query.companyid;
+ 
+  const branch = await Branchs.find({
+    areaId: areaid, 
+    companyId: companyid
+   });
+ 
+   res.status(200).json(branch);
+ });
 
 module.exports = router;

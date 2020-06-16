@@ -19,6 +19,7 @@ const categoryRouter = require('./routes/category');
 const cityRouter = require('./routes/city');
 const organizationRouter = require('./routes/organization');
 const branchRouter = require('./routes/branch');
+const queuehRouter = require('./routes/queue');
 
 const app = express();
 
@@ -58,6 +59,8 @@ app.use('/category', categoryRouter);
 app.use('/city', cityRouter);
 app.use('/organization',organizationRouter);
 app.use('/branch',branchRouter);
+app.use('/queue',queuehRouter);
+
 
 app.use(serveStatic(path.join(__dirname, 'dist')))
 

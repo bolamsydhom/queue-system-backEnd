@@ -12,41 +12,46 @@ const customerSchema = new mongoose.Schema({
     ref: "User",
   },
   queueNumber: {
-     type: Number
-     },
-     isActual:{
-       type:Boolean
-     }
-});
-const queueSchema = new mongoose.Schema(
-  {
-    companyId: {
-      type: mongoose.ObjectId,
-      ref: "Organization",
-      required: true,
-    },
-    branchId: {
-      type: mongoose.ObjectId,
-      ref: "Branch",
-      required: true,
-    },
-    services: [serviceSchema],
-    // services: {
-    //   type: mongoose.ObjectId,
-    //   ref: "serviceSchema",
-    // },
-    cityId: {
-      type: mongoose.ObjectId,
-      ref: "City",
-      required: true,
-    },
-
-    customers: [customerSchema],
+    type: Number
   },
-  {
-    timestamps: true,
+  isActual: {
+    type: Boolean
+  },
+  securityCode: {
+    type: Number
   }
-);
+});
+const queueSchema = new mongoose.Schema({
+  companyId: {
+    type: mongoose.ObjectId,
+    ref: "Organization",
+    required: true,
+  },
+  branchId: {
+    type: mongoose.ObjectId,
+    ref: "Branch",
+    required: true,
+  },
+  service: serviceSchema,
+  // services: {
+  //   type: mongoose.ObjectId,
+  //   ref: "serviceSchema",
+  // },
+  cityId: {
+    type: mongoose.ObjectId,
+    ref: "City",
+    required: true,
+  },
+
+  customers: [customerSchema],
+
+  
+  securityCodes: {
+    type: [Number]
+  }
+}, {
+  timestamps: true,
+});
 queueSchema.set("toJSON", {
   virtuals: true,
 });

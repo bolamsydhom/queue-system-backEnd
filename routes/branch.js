@@ -1,7 +1,6 @@
 const express = require("express");
 require("express-async-errors");
 
-
 const Branchs = require("../models/branch");
 const Days = require("../models/branch");
 
@@ -64,45 +63,43 @@ router.get("/area/:id", async (req, res, next) => {
 //   res.status(200).json(branch);
 // });
 
-
 router.get("/service/:id", async (req, res, next) => {
   const { id } = req.params;
 
   const branch = await Branchs.findById(id);
-const service = Object.values(branch.services)
+  const service = Object.values(branch.services);
 
   res.status(200).json(service);
 });
 
-
 router.get("/branch", async (req, res, next) => {
- //console.log(req.query)
+  //console.log(req.query)
 
+  const cityid = req.query.cityid;
+  const companyid = req.query.companyid;
 
-const cityid = req.query.cityid;
- const companyid = req.query.companyid;
-
- const branch = await Branchs.find({
-   cityId: cityid, 
-   companyId: companyid
+  const branch = await Branchs.find({
+    cityId: cityid,
+    companyId: companyid,
   });
 
   res.status(200).json(branch);
 });
 
-router.get("/branchs", async (req, res, next) => {
+router.get("/recommendedBranchs", async (req, res, next) => {
   //console.log(req.query)
- 
- 
- const areaid = req.query.areaid;
+
+  const cityid = req.query.cityid;
+  const areaid = req.query.areaid;
   const companyid = req.query.companyid;
- 
+
   const branch = await Branchs.find({
-    areaId: areaid, 
-    companyId: companyid
-   });
- 
-   res.status(200).json(branch);
- });
+    cityId: cityid,
+    companyId: companyid,
+    areaId: areaid,
+  });
+
+  res.status(200).json(branch);
+});
 
 module.exports = router;

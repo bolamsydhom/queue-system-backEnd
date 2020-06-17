@@ -7,8 +7,16 @@ const serviceSchema = new mongoose.Schema({
   },
 });
 const customerSchema = new mongoose.Schema({
-  userId: { type: mongoose.ObjectId, ref: "User"},
-  queueNumber: { type: Number },
+  userId: {
+    type: mongoose.ObjectId,
+    ref: "User",
+  },
+  queueNumber: {
+     type: Number
+     },
+     isActual:{
+       type:Boolean
+     }
 });
 const queueSchema = new mongoose.Schema(
   {
@@ -17,10 +25,10 @@ const queueSchema = new mongoose.Schema(
       ref: "Organization",
       required: true,
     },
-    brancdId: {
+    branchId: {
       type: mongoose.ObjectId,
       ref: "Branch",
-      //required: true,
+      required: true,
     },
     services: [serviceSchema],
     // services: {
@@ -33,7 +41,7 @@ const queueSchema = new mongoose.Schema(
       required: true,
     },
 
-    customers:[customerSchema]
+    customers: [customerSchema],
   },
   {
     timestamps: true,

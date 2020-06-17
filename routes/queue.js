@@ -130,31 +130,31 @@ router.get("/getQ", async (req, res, next) => {
   res.status(200).json(vir);
 });
 
-router.get("/actualQ", async (req, res, next) => {
-  const { userId, companyId, branchId, services, cityId } = req.body;
+// router.get("/actualQ", async (req, res, next) => {
+//   const { userId, companyId, branchId, services, cityId } = req.body;
 
-  const virtualQueue = await VirtualQueues.find({
-    companyId: companyId,
-    branchId: branchId,
-    services: services,
-    cityId: cityId,
-  });
+//   const virtualQueue = await VirtualQueues.find({
+//     companyId: companyId,
+//     branchId: branchId,
+//     services: services,
+//     cityId: cityId,
+//   });
 
-  const actualDate = new Date(Date.now()).toString().substr(0, 15);
+//   const actualDate = new Date(Date.now()).toString().substr(0, 15);
 
-  let vir = virtualQueue.filter((queue) => {
-    if (queue.createdAt.toString().substr(0, 15) === actualDate) {
-      return queue;
-    }
-  });
+//   let vir = virtualQueue.filter((queue) => {
+//     if (queue.createdAt.toString().substr(0, 15) === actualDate) {
+//       return queue;
+//     }
+//   });
 
-  const user = vir[0].customers.map((x) => x.queueNumber===5)
+//   const user = vir[0].customers.map((x) => x.queueNumber===5)
   
 
-  console.log(user)
+//   console.log(user)
 
 
-  res.status(200).json(vir);
-});
+//   res.status(200).json(vir);
+// });
 
 module.exports = router;

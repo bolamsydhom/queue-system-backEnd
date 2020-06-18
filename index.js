@@ -68,9 +68,10 @@ app.use(serveStatic(path.join(__dirname, 'dist')))
 app.use((err,req,res,next)=>{
     console.error(err);
     const statusCode = err.statusCode || 500;
+    const errorMessage = err.message || 'Sorry!! something went wrong'
     if (statusCode >= 500) {
      res.status(statusCode).json({
-            message: 'Sorry!! something went wrong',
+            message: errorMessage,
             type: "INTRNAL_SERVER_ERROR",
             details:[]
         });

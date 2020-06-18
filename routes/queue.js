@@ -138,7 +138,8 @@ router.post("/book", async (req, res, next) => {
       }else throw new Error('user has already booked a ticket here')
     }
   } catch (error) {
-    next(error);
+    const err = new Error('ooh! you seems to have a ticket here already');
+    next(err);
   }
 
 

@@ -86,13 +86,14 @@ router.post("/book", async (req, res, next) => {
       });
       await queue.save();
 
-        const resp = {
-             companyId,
-             branchId,
-             service,
-             cityId,
-             newCst
-           };
+      const resp = actual ? newCst : {
+        companyId,
+        branchId,
+        service,
+        cityId,
+        newCst,
+        estimaedTime: 1
+      };
       res.status(200).json(resp);
     }
     //  else if (virtualQueue.length === undefined) {
@@ -115,9 +116,10 @@ router.post("/book", async (req, res, next) => {
         }
       }
 
-      const exist = virtualQueue[0].customers.filter(customer =>
+      const exist = actual ? [] : virtualQueue[0].customers.filter(customer =>
         customer.userId == userId
       )
+
       console.log(exist);
 
       let respon;
@@ -131,7 +133,7 @@ router.post("/book", async (req, res, next) => {
             isActual: false,
             securityCode
           };
-          
+
           virClone[0].customers.push(newCst);
           virtualQueue[0].securityCodes.push(securityCode);
           respon = {
@@ -139,7 +141,8 @@ router.post("/book", async (req, res, next) => {
             branchId,
             service,
             cityId,
-            newCst
+            newCst,
+            estimaedTime: (nextQ - 1) * 10
           };
           await VirtualQueues.updateMany({
             _id: virtualQueue[0].id,
@@ -156,8 +159,8 @@ router.post("/book", async (req, res, next) => {
             isActual: true,
           };
           virClone[0].customers.push(newCst);
-          respon =  newCst;
-          
+          respon = newCst;
+
           await VirtualQueues.update({
             _id: virtualQueue[0].id,
           }, {

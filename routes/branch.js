@@ -3,6 +3,8 @@ require("express-async-errors");
 
 const Branchs = require("../models/branch");
 const Days = require("../models/branch");
+const Queues = require("../models/queue");
+
 
 const router = express.Router();
 
@@ -23,6 +25,7 @@ router.post("/add", async (req, res, next) => {
       workingDays,
       services,
       areaId,
+      isRecommended: false
     });
     await branch.save();
     res.status(200).json(`the Branch added Successfully !`);
@@ -38,17 +41,24 @@ router.post("/add", async (req, res, next) => {
 // });
 
 router.get("/city/:id", async (req, res, next) => {
-  const { id } = req.params;
+  const {
+    id
+  } = req.params;
 
-  const branch = await Branchs.find({
+
+  const branchs = await Branchs.find({
     cityId: id,
   });
 
-  res.status(200).json(branch);
+
+
+  res.status(200).json(branchs);
 });
 
 router.get("/area/:id", async (req, res, next) => {
-  const { id } = req.params;
+  const {
+    id
+  } = req.params;
 
   const branch = await Branchs.find({
     areaId: id,
@@ -64,7 +74,9 @@ router.get("/area/:id", async (req, res, next) => {
 // });
 
 router.get("/service/:id", async (req, res, next) => {
-  const { id } = req.params;
+  const {
+    id
+  } = req.params;
 
   const branch = await Branchs.findById(id);
   const service = Object.values(branch.services);
@@ -78,12 +90,59 @@ router.get("/branch", async (req, res, next) => {
   const cityid = req.query.cityid;
   const companyid = req.query.companyid;
 
-  const branch = await Branchs.find({
+  const branches = await Branchs.find({
     cityId: cityid,
     companyId: companyid,
   });
 
-  res.status(200).json(branch);
+  //  branchesClone = branches;
+  const actualDate = new Date(Date.now()).toString().substr(0, 15);
+  let smallestNumberOfCsts = 0;
+
+   recommendedBranchId = branches.map(async (branch) => {
+    const queues = await Queues.find({
+      companyId: companyid,
+      branchId: branch._id,
+      cityId: cityid,
+    });
+   let brchId =  queues.filter((queue) => {
+      let recBranchId
+      if (queue.createdAt.toString().substr(0, 15) === actualDate) {
+
+        if (smallestNumberOfCsts === 0) {
+          smallestNumberOfCsts = queue.customers.length;
+          recBranchId = queue.branchId;
+
+        } else if (queue.customers.length < smallestNumberOfCsts) {
+          smallestNumberOfCsts = queue.customers.length;
+          recBranchId = queue.branchId;
+          branch.isRecommended = true
+        }
+        // return {
+        //   recommendedBranchId,
+        //   smallestNumberOfCsts
+        // };
+        return recBranchId;
+      }
+    });
+    console.log(brchId);
+    
+    return brchId;
+  var branchesClone = [];
+    branchesClone.push(branch)
+    console.log(branchesClone);
+  })
+
+  // var test = await branches.find({
+  //   _id: toString(recommendedBranchId)
+  // });
+console.log(recommendedBranchId);
+
+
+
+
+
+  // res.status(200).json(branchesClone);
 });
 
 router.get("/recommendedBranchs", async (req, res, next) => {

@@ -52,6 +52,9 @@ const branchSchema = new mongoose.Schema({
         type: mongoose.ObjectId,
         ref:'Area',
         required:true
+    },
+    isRecommended:{
+        type: Boolean
     }
     // departments: {
     //     type: [{

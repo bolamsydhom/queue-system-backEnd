@@ -134,7 +134,7 @@ router.post("/book", async (req, res, next) => {
         }
       });
 
-      res.status(200).json(virClone);
+      res.status(200).json(virClone[0]||virClone);
       }else throw new Error('user has already booked a ticket here')
     }
   } catch (error) {

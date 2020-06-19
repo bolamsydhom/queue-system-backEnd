@@ -99,6 +99,10 @@ router.get("/branch", async (req, res, next) => {
   const actualDate = new Date(Date.now()).toString().substr(0, 15);
   let smallestNumberOfCsts = 0;
 
+    const branch = await Branchs.find({
+      cityId: cityid,
+      companyId: companyid,
+    });
    recommendedBranchId = branches.map(async (branch) => {
     const queues = await Queues.find({
       companyId: companyid,
@@ -142,7 +146,7 @@ console.log(recommendedBranchId);
 
 
 
-  // res.status(200).json(branchesClone);
+  res.status(200).json(branch);
 });
 
 router.get("/recommendedBranchs", async (req, res, next) => {

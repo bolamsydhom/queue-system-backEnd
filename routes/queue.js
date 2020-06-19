@@ -63,7 +63,7 @@ router.post("/book", async (req, res, next) => {
 
     if (virtualQueue.length === 0) {
 
-      const newvirtualCustmor =
+      const newCst =
         actual ? {
           queueNumber: 1,
           isActual: true,
@@ -73,10 +73,10 @@ router.post("/book", async (req, res, next) => {
           isActual: false,
           securityCode
         };
-      const securityCodes = actual? []: [securityCode];
+      const securityCodes = actual ? [] : [securityCode];
 
       const queue = new VirtualQueues({
-        customers: newvirtualCustmor,
+        customers: newCst,
         userId,
         companyId,
         branchId,
@@ -85,7 +85,15 @@ router.post("/book", async (req, res, next) => {
         securityCodes
       });
       await queue.save();
-      res.status(200).json(queue);
+
+        const resp = {
+             companyId,
+             branchId,
+             service,
+             cityId,
+             newCst
+           };
+      res.status(200).json(resp);
     }
     //  else if (virtualQueue.length === undefined) {
     //   let lastNoInVir = virtualQueue.customers.slice(-1)[0].queueNumber;
@@ -106,40 +114,68 @@ router.post("/book", async (req, res, next) => {
           index = 0;
         }
       }
-      if(!actual) virtualQueue[0].securityCodes.push(securityCode);
 
-     const exist = virtualQueue[0].customers.filter( customer =>
-      customer.userId == userId
+      const exist = virtualQueue[0].customers.filter(customer =>
+        customer.userId == userId
       )
       console.log(exist);
-      
-      if(exist.length === 0){
 
-      const newCustmor =
-        actual ? {
-          queueNumber: nextQ,
-          isActual: true,
-        } : {
-          userId,
-          queueNumber: nextQ,
-          isActual: false,
-          securityCode
-        };
-      virClone[0].customers.push(newCustmor);
-      await VirtualQueues.update({
-        _id: virtualQueue[0].id,
-      }, {
-        $addToSet: {
-          customers: newCustmor
+      let respon;
+
+      if (exist.length === 0) {
+
+        if (!actual) {
+          const newCst = {
+            userId,
+            queueNumber: nextQ,
+            isActual: false,
+            securityCode
+          };
+          
+          virClone[0].customers.push(newCst);
+          virtualQueue[0].securityCodes.push(securityCode);
+          respon = {
+            companyId,
+            branchId,
+            service,
+            cityId,
+            newCst
+          };
+          await VirtualQueues.updateMany({
+            _id: virtualQueue[0].id,
+          }, {
+            $addToSet: {
+              customers: newCst,
+              securityCodes: securityCode
+            }
+          });
+
+        } else {
+          const newCst = {
+            queueNumber: nextQ,
+            isActual: true,
+          };
+          virClone[0].customers.push(newCst);
+          respon =  newCst;
+          
+          await VirtualQueues.update({
+            _id: virtualQueue[0].id,
+          }, {
+            $addToSet: {
+              customers: newCst
+            }
+          });
         }
-      });
 
-      res.status(200).json(virClone[0]||virClone);
-      }else throw new Error('user has already booked a ticket here')
+
+
+
+
+        res.status(200).json(respon);
+      } else throw new Error('ooh! you seems to have a ticket here already')
     }
   } catch (error) {
-    const err = new Error('ooh! you seems to have a ticket here already');
-    next(err);
+    next(error);
   }
 
 

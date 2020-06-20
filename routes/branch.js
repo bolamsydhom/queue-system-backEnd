@@ -108,28 +108,35 @@ router.get("/branch", async (req, res, next) => {
   });
   let smallestNumberOfCsts = 0;
   let brnchId;
-  for (let index = 0; index < todayQueue.length; index++) {
-    if (smallestNumberOfCsts === 0 || todayQueue[index].customers.length < smallestNumberOfCsts) {
-      smallestNumberOfCsts = todayQueue[index].customers.length;
-      brnchId = todayQueue[index].branchId;
+  if (todayQueue) {
+    for (let index = 0; index < todayQueue.length; index++) {
+      if (smallestNumberOfCsts === 0 || todayQueue[index].customers.length < smallestNumberOfCsts) {
+        smallestNumberOfCsts = todayQueue[index].customers.length;
+        brnchId = todayQueue[index].branchId;
+      }
     }
+    console.log("smallestNumberOfCsts  ", smallestNumberOfCsts);
+    console.log("brnch ID  ", brnchId);
+
+    let branchesClone = branches.map(branch => {
+      console.log(branch._id.toString());
+
+      console.log(branch._id.toString() === brnchId.toString());
+
+      if (branch._id.toString() === brnchId.toString()) {
+        branch.isRecommended = true;
+      }
+      return branch;
+    })
+
+    console.log(branchesClone);
+    res.status(200).json(branchesClone);
+
+  } else {
+
+    res.status(200).json(branches);
+
   }
-  console.log("smallestNumberOfCsts  ", smallestNumberOfCsts);
-  console.log("brnch ID  ", brnchId);
-
-  let branchesClone = branches.map( branch => {
-    console.log(branch._id.toString());
-    
-    console.log(branch._id.toString() === brnchId.toString());
-    
-    if (branch._id.toString() === brnchId.toString()) {
-      branch.isRecommended = true;
-    }
-    return branch;
-  })
-
-  console.log(branchesClone);
-  
 
 
 
@@ -138,8 +145,6 @@ router.get("/branch", async (req, res, next) => {
 
 
 
-
-  res.status(200).json(branchesClone);
 });
 
 router.get("/recommendedBranchs", async (req, res, next) => {

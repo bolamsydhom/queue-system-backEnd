@@ -95,58 +95,51 @@ router.get("/branch", async (req, res, next) => {
     companyId: companyid,
   });
 
-  //  branchesClone = branches;
+  const queues = await Queues.find({
+    companyId: companyid,
+    cityId: cityid,
+  });
+
   const actualDate = new Date(Date.now()).toString().substr(0, 15);
+  let todayQueue = queues.filter((queue) => {
+    if (queue.createdAt.toString().substr(0, 15) === actualDate) {
+      return queue;
+    }
+  });
   let smallestNumberOfCsts = 0;
+  let brnchId;
+  for (let index = 0; index < todayQueue.length; index++) {
+    if (smallestNumberOfCsts === 0 || todayQueue[index].customers.length < smallestNumberOfCsts) {
+      smallestNumberOfCsts = todayQueue[index].customers.length;
+      brnchId = todayQueue[index].branchId;
+    }
+  }
+  console.log("smallestNumberOfCsts  ", smallestNumberOfCsts);
+  console.log("brnch ID  ", brnchId);
 
-    const branch = await Branchs.find({
-      cityId: cityid,
-      companyId: companyid,
-    });
-   recommendedBranchId = branches.map(async (branch) => {
-    const queues = await Queues.find({
-      companyId: companyid,
-      branchId: branch._id,
-      cityId: cityid,
-    });
-   let brchId =  queues.filter((queue) => {
-      let recBranchId
-      if (queue.createdAt.toString().substr(0, 15) === actualDate) {
-
-        if (smallestNumberOfCsts === 0) {
-          smallestNumberOfCsts = queue.customers.length;
-          recBranchId = queue.branchId;
-
-        } else if (queue.customers.length < smallestNumberOfCsts) {
-          smallestNumberOfCsts = queue.customers.length;
-          recBranchId = queue.branchId;
-          branch.isRecommended = true
-        }
-        // return {
-        //   recommendedBranchId,
-        //   smallestNumberOfCsts
-        // };
-        return recBranchId;
-      }
-    });
-    console.log(brchId);
+  let branchesClone = branches.map( branch => {
+    console.log(branch._id.toString());
     
-    return brchId;
-  var branchesClone = [];
-    branchesClone.push(branch)
-    console.log(branchesClone);
+    console.log(branch._id.toString() === brnchId.toString());
+    
+    if (branch._id.toString() === brnchId.toString()) {
+      branch.isRecommended = true;
+    }
+    return branch;
   })
 
-  // var test = await branches.find({
-  //   _id: toString(recommendedBranchId)
-  // });
-console.log(recommendedBranchId);
+  console.log(branchesClone);
+  
 
 
 
 
 
-  res.status(200).json(branch);
+
+
+
+
+  res.status(200).json(branchesClone);
 });
 
 router.get("/recommendedBranchs", async (req, res, next) => {

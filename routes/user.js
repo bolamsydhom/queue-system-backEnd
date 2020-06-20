@@ -178,6 +178,8 @@ router.post('/generateCode', async (req, res, next) => {
     const {
         phone
     } = req.body;
+    console.log(phone);
+    
     messagebird.verify.create(phone, {
             originator: 'Code',
             template: 'your verfication code for Q : %token'
@@ -200,7 +202,7 @@ router.post('/verifyCode', async (req, res, next) => {
     const {
         id , token
     } = req.body;
-    messagebird.verify.verify(id,token, function (err, response) {
+    messagebird.verify.verify(id, token, function (err, response) {
             if (err) {
                 console.log(err);
                 next(err)

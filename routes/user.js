@@ -9,7 +9,7 @@ const fileUpload = require('express-fileupload');
 const emailverfication = require('../middlewares/emailverfication');
 const cloudinary = require("cloudinary").v2;
 
-var messagebird = require('messagebird')('u3qIWZx77wCssxbYFER005Tyz');
+var messagebird = require('messagebird')('rF1uSHDLOc94OdQRuFDsnIXaU');
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -174,11 +174,12 @@ router.post('/register', async (req, res, next) => {
 })
 
 
-router.post('/verifyNum', async (req, res, next) => {
+router.post('/generateCode', async (req, res, next) => {
     const {
         phone
     } = req.body;
     messagebird.verify.create(phone, {
+            originator: 'Code',
             template: 'your verfication code for Q : %token'
         },
         function (err, response) {
@@ -194,6 +195,23 @@ router.post('/verifyNum', async (req, res, next) => {
         });
 });
 
+
+router.post('/verifyCode', async (req, res, next) => {
+    const {
+        id , token
+    } = req.body;
+    messagebird.verify.verify(id,token, function (err, response) {
+            if (err) {
+                console.log(err);
+                next(err)
+            } else {
+                res.status(200).json(response);
+
+                console.log(response);
+
+            }
+        });
+});
 
 
 

@@ -42,7 +42,7 @@ router.post("/book", async (req, res, next) => {
   } = req.query;
 
   try {
-    const virtualQueues = await VirtualQueues.find({
+    const queues = await VirtualQueues.find({
       companyId: companyId,
       branchId: branchId,
       service: service,
@@ -52,7 +52,7 @@ router.post("/book", async (req, res, next) => {
     const actualDate = new Date(Date.now()).toString().substr(0, 15);
 
 
-    let virtualQueue = virtualQueues.filter((queue) => {
+    let virtualQueue = queues.filter((queue) => {
       if (queue.createdAt.toString().substr(0, 15) === actualDate) {
         return queue;
       }
@@ -210,5 +210,40 @@ router.post("/book", async (req, res, next) => {
 
 //   res.status(200).json(virtualQueue);
 // });
+
+
+router.post("/cstCame", async (req, res, next) => {
+  const {
+    cstCode,
+    companyId,
+    branchId,
+    service,
+    cityId
+  } = req.body;
+
+
+  try {
+    const queues = await VirtualQueues.find({
+      companyId: companyId,
+      branchId: branchId,
+      service: service,
+      cityId: cityId,
+    });
+
+    const actualDate = new Date(Date.now()).toString().substr(0, 15);
+
+
+    let queue = queues.filter((queue) => {
+      if (queue.createdAt.toString().substr(0, 15) === actualDate) {
+        return queue;
+      }
+    });
+    
+  } catch (error) {
+    console.log(error);
+
+  }
+});
+
 
 module.exports = router;

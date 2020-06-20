@@ -9,7 +9,7 @@ const fileUpload = require('express-fileupload');
 const emailverfication = require('../middlewares/emailverfication');
 const cloudinary = require("cloudinary").v2;
 
-var messagebird = require('messagebird')('rF1uSHDLOc94OdQRuFDsnIXaU');
+var messagebird = require('messagebird')(process.env.MESSAGEBIRD_API_KEY);
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,

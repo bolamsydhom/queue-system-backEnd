@@ -100,15 +100,17 @@ router.get("/branch", async (req, res, next) => {
     cityId: cityid,
   });
 
+  if (queues.length > 0) {
   const actualDate = new Date(Date.now()).toString().substr(0, 15);
   let todayQueue = queues.filter((queue) => {
     if (queue.createdAt.toString().substr(0, 15) === actualDate) {
       return queue;
     }
   });
+
+  if(todayQueue.length > 0){
   let smallestNumberOfCsts = 0;
   let brnchId;
-  if (todayQueue) {
     for (let index = 0; index < todayQueue.length; index++) {
       if (smallestNumberOfCsts === 0 || todayQueue[index].customers.length < smallestNumberOfCsts) {
         smallestNumberOfCsts = todayQueue[index].customers.length;
@@ -131,6 +133,7 @@ router.get("/branch", async (req, res, next) => {
 
     console.log(branchesClone);
     res.status(200).json(branchesClone);
+  }
 
   } else {
 

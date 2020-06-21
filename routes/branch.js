@@ -101,39 +101,66 @@ router.get("/branch", async (req, res, next) => {
   });
 
   if (queues.length > 0) {
-  const actualDate = new Date(Date.now()).toString().substr(0, 15);
-  let todayQueue = queues.filter((queue) => {
-    if (queue.createdAt.toString().substr(0, 15) === actualDate) {
-      return queue;
-    }
-  });
-
-  if(todayQueue.length > 0){
-  let smallestNumberOfCsts = 0;
-  let brnchId;
-    for (let index = 0; index < todayQueue.length; index++) {
-      if (smallestNumberOfCsts === 0 || todayQueue[index].customers.length < smallestNumberOfCsts) {
-        smallestNumberOfCsts = todayQueue[index].customers.length;
-        brnchId = todayQueue[index].branchId;
+    const actualDate = new Date(Date.now()).toString().substr(0, 15);
+    let todayQueue = queues.filter((queue) => {
+      if (queue.createdAt.toString().substr(0, 15) === actualDate) {
+        return queue;
       }
-    }
-    console.log("smallestNumberOfCsts  ", smallestNumberOfCsts);
-    console.log("brnch ID  ", brnchId);
+    });
+    // console.log(todayQueue)
 
-    let branchesClone = branches.map(branch => {
-      console.log(branch._id.toString());
+    if (todayQueue.length > 0) {
+      let smallestNumberOfCsts = 0;
+      let obj = [];
+      for (let index = 0; index < todayQueue.length; index++) {
 
-      console.log(branch._id.toString() === brnchId.toString());
+        let num = 0;
+        let bId;
+        for (let j = 1; j < todayQueue.length; j++) {
+          if (todayQueue[index].branchId == todayQueue[j].branchId) {
+            num = num + todayQueue[j].customers.length;
+            bId = todayQueue[j].branchId
+          }
 
-      if (branch._id.toString() === brnchId.toString()) {
-        branch.isRecommended = true;
+        }
+        obj.push({
+          bId,
+          num
+        })
+
+        // if (smallestNumberOfCsts === 0 || todayQueue[index].customers.length < smallestNumberOfCsts) {
+        //   smallestNumberOfCsts = todayQueue[index].customers.length;
+        //   brnchId = todayQueue[index].branchId;
+        // }
       }
-      return branch;
-    })
+      // console.log("smallestNumberOfCsts  ", smallestNumberOfCsts);
+      // console.log("brnch ID  ", brnchId);
 
-    console.log(branchesClone);
-    res.status(200).json(branchesClone);
-  }
+
+      console.log(obj);
+      var brnchId;
+      for (let i = 2; i < obj.length; i++) {
+        if (obj[i-1].num > obj[i].num) {
+          brnchId = obj[i].bId;
+        }
+        console.log(brnchId);
+      }
+
+
+      let branchesClone = branches.map(branch => {
+        console.log(branch._id.toString());
+
+        console.log(branch._id.toString() === brnchId.toString());
+
+        if (branch._id.toString() === brnchId.toString()) {
+          branch.isRecommended = true;
+        }
+        return branch;
+      })
+
+      console.log(branchesClone);
+      res.status(200).json(branchesClone);
+    }
 
   } else {
 

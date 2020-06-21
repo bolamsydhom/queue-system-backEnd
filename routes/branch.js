@@ -146,7 +146,7 @@ router.get("/branch", async (req, res, next) => {
         console.log(brnchId);
       }
 
-      if (branchId) {
+      if (obj.length > 1) {
         let branchesClone = branches.map(branch => {
           // console.log(branch._id.toString());
 
@@ -160,6 +160,8 @@ router.get("/branch", async (req, res, next) => {
         console.log(branchesClone);
         res.status(200).json(branchesClone);
 
+      }else{
+        res.status(200).json(branches);
       }
     }
 

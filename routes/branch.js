@@ -140,26 +140,27 @@ router.get("/branch", async (req, res, next) => {
       console.log(obj);
       var brnchId;
       for (let i = 2; i < obj.length; i++) {
-        if (obj[i-1].num > obj[i].num) {
+        if (obj[i - 1].num > obj[i].num) {
           brnchId = obj[i].bId;
         }
         console.log(brnchId);
       }
 
+      if (branchId) {
+        let branchesClone = branches.map(branch => {
+          // console.log(branch._id.toString());
 
-      let branchesClone = branches.map(branch => {
-        console.log(branch._id.toString());
+          // console.log(branch._id.toString() === brnchId.toString());
 
-        console.log(branch._id.toString() === brnchId.toString());
+          if (branch._id.toString() === brnchId.toString()) {
+            branch.isRecommended = true;
+          }
+          return branch;
+        })
+        console.log(branchesClone);
+        res.status(200).json(branchesClone);
 
-        if (branch._id.toString() === brnchId.toString()) {
-          branch.isRecommended = true;
-        }
-        return branch;
-      })
-
-      console.log(branchesClone);
-      res.status(200).json(branchesClone);
+      }
     }
 
   } else {

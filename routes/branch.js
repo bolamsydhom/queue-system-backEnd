@@ -143,10 +143,12 @@ router.get("/branch", async (req, res, next) => {
         if (obj[i - 1].num > obj[i].num) {
           brnchId = obj[i].bId;
         }
+
         console.log(brnchId);
       }
+   
 
-      if (obj.length > 2) {
+      if (obj.length > 2 && brnchId !== undefined) {
         let branchesClone = branches.map(branch => {
           // console.log(branch._id.toString());
 

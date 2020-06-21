@@ -238,7 +238,33 @@ router.post("/cstCame", async (req, res, next) => {
         return queue;
       }
     });
-    
+    let doesntExist = true;
+    let queueCustomersClone = queue[0].customers.map(c => {
+      console.log(c.securityCode);
+      console.log(cstCode);
+      
+      console.log(c.securityCode == +cstCode);
+      
+      if (c.securityCode == +cstCode) {
+        doesntExist = false;
+        c.isActual = true;
+      }
+      return c;
+    })
+
+
+
+    if (doesntExist) {
+      throw customeError ("this customer doesn't exist")
+    }else{
+      await VirtualQueues.update({
+        _id: queue[0]._id
+      }, {$set: {"customers":queueCustomersClone}});
+
+      res.status(200).json(queueCustomersClone);
+
+    }
+
   } catch (error) {
     console.log(error);
 

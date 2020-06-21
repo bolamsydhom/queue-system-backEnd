@@ -255,7 +255,7 @@ router.post("/cstCame", async (req, res, next) => {
 
 
     if (doesntExist) {
-      throw customeError ("this customer doesn't exist")
+      throw new Error ("this customer doesn't exist")
     }else{
       await VirtualQueues.update({
         _id: queue[0]._id

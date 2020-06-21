@@ -267,6 +267,7 @@ router.post("/cstCame", async (req, res, next) => {
 
   } catch (error) {
     console.log(error);
+    next(err);
 
   }
 });
